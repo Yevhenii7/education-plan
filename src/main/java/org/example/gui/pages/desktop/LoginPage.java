@@ -78,6 +78,12 @@ public class LoginPage extends BaseSitePage {
         return signUpButtonClick();
     }
 
+    public SignUpPage signIn(String name, String email) {
+        inputName(name);
+        inputSignUpEmail(email);
+        return signUpButtonClick();
+    }
+
     public boolean isLoginToAccountTitlePresent() {
         return loginToAccountTitle.isDisplayed();
     }

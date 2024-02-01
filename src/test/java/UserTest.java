@@ -1,3 +1,4 @@
+import org.apache.commons.lang3.RandomStringUtils;
 import org.example.gui.pages.desktop.HomePage;
 import org.example.gui.pages.desktop.LoginPage;
 import org.example.gui.pages.desktop.SignUpPage;
@@ -38,6 +39,22 @@ public class UserTest extends AbstractTest {
         Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
     }
 
+    @Test(dataProvider = "registerUserData")
+    public void verifyRegisterUserDataProvider(String name, String email) {
+        UserService user = new UserService();
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        LOGGER.info(" automation exercise page is opened");
+        Assert.assertTrue(homePage.isPageOpened(), "Page is not opened");
+        LoginPage loginPage = homePage.getHeaderMenu().clickButtonLogin();
+        String upFormTitle = loginPage.getSignUpFormTitle(SIGN_UP_FORM_TITLE);
+        Assert.assertEquals(upFormTitle, SIGN_UP_FORM_TITLE, "New User Signup! is not match");
+        SignUpPage signUpPage = loginPage.signIn(name, email);
+        Assert.assertTrue(signUpPage.isTitleAccountInfoPresent(TITLE_ACCOUNT_INFORMATION), "ENTER ACCOUNT INFORMATION is not visible");
+        signUpPage.completeSignUpForm(user);
+        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
+    }
+
     @Test(dataProvider = "loginDataProvider")
     public void verifyUserLogin(String email, String password, boolean expectSuccess, String errorMessage) {
         HomePage homePage = new HomePage(getDriver());
@@ -52,6 +69,27 @@ public class UserTest extends AbstractTest {
         } else {
             Assert.assertEquals(loginPage.loginFailed(), errorMessage, "Login verification failed");
         }
+    }
+
+    @DataProvider(name = "registerUserData")
+    public Object[][] getRegisterUserData() {
+        Object[][] testData = new Object[10][2];
+        for (int i = 0; i < 3; i++) {
+            String randomFirstName = generateRandomString(4);
+            String randomEmail = generateRandomEmail();
+
+            testData[i] = new Object[]{randomFirstName, randomEmail};
+        }
+        return testData;
+    }
+
+    private String generateRandomString(int length) {
+        return RandomStringUtils.randomAlphabetic(length);
+    }
+
+    private String generateRandomEmail() {
+        String randomName = generateRandomString(6);
+        return randomName + "@example.com";
     }
 
     @DataProvider(name = "loginDataProvider")

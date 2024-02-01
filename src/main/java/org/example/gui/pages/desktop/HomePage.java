@@ -1,5 +1,6 @@
 package org.example.gui.pages.desktop;
 
+
 import org.example.enums.PageOpeningStrategy;
 import org.example.gui.pages.common.BaseSitePage;
 import org.openqa.selenium.WebDriver;
