@@ -1,7 +1,9 @@
 import org.apache.commons.lang3.RandomStringUtils;
+import org.example.enums.HeaderMenuItems;
 import org.example.gui.pages.desktop.HomePage;
 import org.example.gui.pages.desktop.LoginPage;
 import org.example.gui.pages.desktop.SignUpPage;
+import org.example.model.SignUpPageBuilder;
 import org.example.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +33,31 @@ public class UserTest extends AbstractTest {
         LOGGER.info(" automation exercise page is opened");
         Assert.assertTrue(homePage.isPageOpened(), "Page is not opened");
         LoginPage loginPage = homePage.getHeaderMenu().clickButtonLogin();
-        String upFormTitle = loginPage.getSignUpFormTitle(SIGN_UP_FORM_TITLE);
+        String upFormTitle = loginPage.getSignUpForm().getSignUpFormTitle(SIGN_UP_FORM_TITLE);
         Assert.assertEquals(upFormTitle, SIGN_UP_FORM_TITLE, "New User Signup! is not match");
-        SignUpPage signUpPage = loginPage.signIn(user);
+        SignUpPage signUpPage = loginPage.getSignUpForm().signIn(user);
         Assert.assertTrue(signUpPage.isTitleAccountInfoPresent(TITLE_ACCOUNT_INFORMATION), "ENTER ACCOUNT INFORMATION is not visible");
         signUpPage.completeSignUpForm(user);
+        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
+    }
+
+    @Test
+    public void verifyRegisterUserBuildPattern() {
+        UserService user = new UserService();
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        LOGGER.info(" automation exercise page is opened");
+        Assert.assertTrue(homePage.isPageOpened(), "Page is not opened");
+        LoginPage loginPage = homePage.getHeaderMenu().clickButtonLogin();
+        String upFormTitle = loginPage.getSignUpForm().getSignUpFormTitle(SIGN_UP_FORM_TITLE);
+        Assert.assertEquals(upFormTitle, SIGN_UP_FORM_TITLE, "New User Signup! is not match");
+        SignUpPage signUpPage = loginPage.getSignUpForm().signIn(user);
+        Assert.assertTrue(signUpPage.isTitleAccountInfoPresent(TITLE_ACCOUNT_INFORMATION), "ENTER ACCOUNT INFORMATION is not visible");
+        signUpPage = new SignUpPageBuilder()
+                .withPassword(user.getUser().getPassword()).withDateOfBirth("27", "March", "2021")
+                .withFirstName(user.getUser().getName()).withLastName(user.getUser().getLastName())
+                .withAddress("123 Main St").withCountry("United States").withState("California")
+                .withCity("Los Angeles").withZipCode("90001").withMobileNumber("1234567890").build(getDriver());
         Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
     }
 
@@ -47,9 +69,9 @@ public class UserTest extends AbstractTest {
         LOGGER.info(" automation exercise page is opened");
         Assert.assertTrue(homePage.isPageOpened(), "Page is not opened");
         LoginPage loginPage = homePage.getHeaderMenu().clickButtonLogin();
-        String upFormTitle = loginPage.getSignUpFormTitle(SIGN_UP_FORM_TITLE);
+        String upFormTitle = loginPage.getSignUpForm().getSignUpFormTitle(SIGN_UP_FORM_TITLE);
         Assert.assertEquals(upFormTitle, SIGN_UP_FORM_TITLE, "New User Signup! is not match");
-        SignUpPage signUpPage = loginPage.signIn(name, email);
+        SignUpPage signUpPage = loginPage.getSignUpForm().signIn(name, email);
         Assert.assertTrue(signUpPage.isTitleAccountInfoPresent(TITLE_ACCOUNT_INFORMATION), "ENTER ACCOUNT INFORMATION is not visible");
         signUpPage.completeSignUpForm(user);
         Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
@@ -61,13 +83,13 @@ public class UserTest extends AbstractTest {
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Home page doesn't open");
 
-        LoginPage loginPage = homePage.getHeaderMenu().clickButtonLogin();
-        Assert.assertTrue(loginPage.isLoginToAccountTitlePresent(), "Title doesn't present");
-        homePage = loginPage.logIn(email, password);
+        LoginPage loginPage = (LoginPage) homePage.getHeaderMenu().pickHeaderMenuItem(HeaderMenuItems.LOGIN_PAGE);
+        Assert.assertTrue(loginPage.getLoginForm().isLoginToAccountTitlePresent(), "Title doesn't present");
+        homePage = loginPage.getLoginForm().logIn(email, password);
         if (expectSuccess) {
             Assert.assertTrue(homePage.getHeaderMenu().getUserName().contains(VALID_NAME), "logged in as username is not visible");
         } else {
-            Assert.assertEquals(loginPage.loginFailed(), errorMessage, "Login verification failed");
+            Assert.assertEquals(loginPage.getLoginForm().loginFailed(), errorMessage, "Login verification failed");
         }
     }
 

@@ -1,5 +1,8 @@
 package org.example.gui.components;
 
+import org.apache.commons.lang3.NotImplementedException;
+import org.example.enums.HeaderMenuItems;
+import org.example.gui.pages.common.AbstractPage;
 import org.example.gui.pages.desktop.LoginPage;
 import org.example.utils.ExtendedWebElement;
 import org.openqa.selenium.SearchContext;
@@ -20,6 +23,9 @@ public class Header extends AbstractComponent {
     @FindBy(xpath = "//a[contains(., 'Logged in as')]/b")
     private ExtendedWebElement userName;
 
+    @FindBy(xpath = "//a[@href='%s']")
+    private ExtendedWebElement headerItem;
+
 
     public Header(SearchContext searchContext, WebDriver driver) {
         super(searchContext, driver);
@@ -36,7 +42,21 @@ public class Header extends AbstractComponent {
     }
 
     public String getUserName() {
-       return userName.getText();
+        return userName.getText();
     }
+
+    public AbstractPage pickHeaderMenuItem(HeaderMenuItems item) {
+        switch (item){
+            case LOGIN_PAGE:
+                headerItem.format(item.getHref());
+                headerItem.click();
+                return new LoginPage(getDriver());
+            default:
+                throw new NotImplementedException("Href " + item.getHref() + " not implemented");
+
+        }
+
+    }
+
 
 }

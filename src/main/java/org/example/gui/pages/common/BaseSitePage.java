@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class BaseSitePage extends AbstractPage {
 
-    @FindBy(xpath = "//header[contains(@class,'page')]")
+    @FindBy(id = "header")
     private Header header;
 
     public BaseSitePage(WebDriver driver) {
