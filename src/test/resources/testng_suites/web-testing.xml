@@ -3,9 +3,6 @@
     <test name="Web Tests">
         <classes>
             <class name="HomeTest">
-                <methods>
-                    <include name="verifyHomePage"/>
-                </methods>
             </class>
         </classes>
     </test>
