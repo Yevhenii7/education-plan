@@ -20,4 +20,15 @@ public class HomeTest extends AbstractTest {
         String logoText = homePage.getHeaderMenu().getTextLogo();
         Assert.assertEquals(logoText, textLogo, "Logo text is not the same");
     }
+
+    @Test
+    public void verifyHomePage2() {
+        String textLogo = R.TEST_DATA.getString("logotext");
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        LOGGER.info(" automation exercise page is opened");
+        Assert.assertTrue(homePage.isPageOpened(), "Page is not opened");
+        String logoText = homePage.getHeaderMenu().getTextLogo();
+        Assert.assertEquals(logoText, textLogo, "Logo text is not the same");
+    }
 }
