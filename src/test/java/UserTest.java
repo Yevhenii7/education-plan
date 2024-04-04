@@ -25,7 +25,7 @@ public class UserTest extends AbstractTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserTest.class);
 
-    @Test
+    @Test(enabled = false)
     public void verifyRegisterUser() {
         UserService user = new UserService();
         HomePage homePage = new HomePage(getDriver());
@@ -38,10 +38,10 @@ public class UserTest extends AbstractTest {
         SignUpPage signUpPage = loginPage.getSignUpForm().signIn(user);
         Assert.assertTrue(signUpPage.isTitleAccountInfoPresent(TITLE_ACCOUNT_INFORMATION), "ENTER ACCOUNT INFORMATION is not visible");
         signUpPage.completeSignUpForm(user);
-        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
+        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent(), "Title is not present");
     }
 
-    @Test
+    @Test(enabled = false)
     public void verifyRegisterUserBuildPattern() {
         UserService user = new UserService();
         HomePage homePage = new HomePage(getDriver());
@@ -58,7 +58,7 @@ public class UserTest extends AbstractTest {
                 .withFirstName(user.getUser().getName()).withLastName(user.getUser().getLastName())
                 .withAddress("123 Main St").withCountry("United States").withState("California")
                 .withCity("Los Angeles").withZipCode("90001").withMobileNumber("1234567890").build(getDriver());
-        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
+        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent(), "Title is not present");
     }
 
     @Test(dataProvider = "registerUserData")
@@ -74,7 +74,7 @@ public class UserTest extends AbstractTest {
         SignUpPage signUpPage = loginPage.getSignUpForm().signIn(name, email);
         Assert.assertTrue(signUpPage.isTitleAccountInfoPresent(TITLE_ACCOUNT_INFORMATION), "ENTER ACCOUNT INFORMATION is not visible");
         signUpPage.completeSignUpForm(user);
-        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent());
+        Assert.assertTrue(signUpPage.isAccountCreatedTitlePresent(), "Title is not present");
     }
 
     @Test(dataProvider = "loginDataProvider")

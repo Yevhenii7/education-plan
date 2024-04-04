@@ -17,7 +17,7 @@ public class HomeTest extends AbstractTest {
         homePage.open();
         LOGGER.info(" automation exercise page is opened");
         Assert.assertTrue(homePage.isPageOpened(), "Page is not opened");
-        String logoText = homePage.getHeaderMenu().getTextLogo(textLogo);
+        String logoText = homePage.getHeaderMenu().getTextLogo();
         Assert.assertEquals(logoText, textLogo, "Logo text is not the same");
     }
 }
