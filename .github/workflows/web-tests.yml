@@ -21,4 +21,4 @@ jobs:
           java-version: '11'
 
       - name: Run Web Tests
-        run: mvn clean test -Dsuite=testng test
+        run: mvn clean test -Dsuite=web-testing
