@@ -19,6 +19,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+      - name: Start selenoid server
+        uses: Xotabu4/selenoid-github-action@v2
+        with:
+          selenoid-start-arguments: |
+              --browsers 'chrome' --last-versions 1
 
-      - name: Run Web Tests
-        run: mvn clean test -Dsuite=web-testing
+      - name: Run tests
+        run: mvn clean test -Dsuite=web-testing -Dbrowser=chrome
