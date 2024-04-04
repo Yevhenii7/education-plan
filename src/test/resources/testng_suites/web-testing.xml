@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Web testing suite">
+    <test name="Web Tests">
+        <classes>
+            <class name="HomeTest">
+                <methods>
+                    <include name="verifyHomePage"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

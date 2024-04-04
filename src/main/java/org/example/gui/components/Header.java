@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class Header extends AbstractComponent {
 
-    @FindBy(xpath = "//div[@class='logo pull-left']/a/img[contains(@alt, '%s')]")
+    @FindBy(xpath = "//img[contains(@src,'logo')]")
     private ExtendedWebElement logo;
 
     @FindBy(xpath = "//a[contains(text(),'Sign In')]")
@@ -31,9 +31,8 @@ public class Header extends AbstractComponent {
         super(searchContext, driver);
     }
 
-    public String getTextLogo(String logoTitle) {
-        logo.format(logoTitle);
-        return logo.getText();
+    public String getTextLogo() {
+        return logo.getAttribute("alt");
     }
 
     public LoginPage clickButtonLogin() {
